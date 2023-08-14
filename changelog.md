@@ -6,12 +6,12 @@
 ##### Added
 - Adicionado suporte a verificação de versão do python através de um script helper.
 
-#### [release]
+#### [Release]
 #### [0.6.0]
 ##### Changed
 - Alterado cor do título do framework para branco
 
-#### [release]
+#### [Release]
 #### [0.5.1]
 ##### Added
 - Adicionado método para caso haja falha no carregamento do template
@@ -19,52 +19,52 @@
 - Agora será chamado o método de falha ao carregar template em vez de um retorno
  direto com o html de erro.
 
-#### [release]
+#### [Release]
 #### [0.5.0]
 ##### Changed
 - Estrutura do projeto foi modificada pra ficar mais enxuta.
 - Alterado função application.
 - Alterado formato de criação de rotas.
 
-#### [release]
+#### [Release]
 #### [0.4.3]
 ##### Changed
 - Arrumado a estrutura de páginas.
 ##### Removed
 - Removido a class page dando lugar a classes para cada página
 
-#### [release]
+#### [Release]
 #### [0.4.2]
 ##### Changed
 - Removido método create_user da classe Page do módulo model.core.
 - Ajustado métodos da classe page para haver alternativas caso
  não exista template para as requisições efetuadas.
 
-#### [release]
+#### [Release]
 #### [0.4.1]
 ##### Changed
 - Criado modulo templates e adicionado movido classes de leitura de templates
  para novo local
 - Movido leitura de assets para dentro de model.
 
-#### [release]
+#### [Release]
 #### [0.4.0] - 2022-01-25
 ##### Added
 - Aplicado logs nas várias partes do framework
 
-#### [release]
+#### [Release]
 #### [0.3.2] - 2021-12-16
 ##### Fixed
 - Resolvido problema ao criar rotas para downloads privados.
 
-#### [release]
+#### [Release]
 #### [0.3.1] - 2021-12-14
 ##### Fixed
 - Resolvido problemas de autenticação
 - Aplicado algumas melhorias no código
 - Deixado o debug opcional ao desenvolvedor
 
-#### [released]
+#### [Released]
 #### [0.3.0] - 2021-12-13
 ##### Added
 - Adicionado estrutura de pastas system, para suporte arquivos de usuário
@@ -73,7 +73,7 @@
 ##### Fixed
 - Resolvido falha na autenticação por cookies
 
-#### [released]
+#### [Released]
 #### [0.2.5] - 2021-12-10
 ##### Changed
 - Dividido a class RouteAssets em duas classes, Assets() e ReadAssets(),
@@ -81,25 +81,25 @@
 - Adicionado as classes AssetsController e ReadAssetsController para futuras
  extensões.
 
-#### [released]
+#### [Released]
 #### [0.2.4] - 2021-12-09
 ##### Changed
 - Alterado classe Auth para ficar mais legível e menor
 - Acrescentado classes hash, request e cookie para dar suporte à classe Auth.
 
-#### [released]
+#### [Released]
 #### [0.2.3] - 2021-12-08
-##### changed
+##### Changed
 - Alterado estrutura na pasta model
 
-#### [released]
+#### [Released]
 #### [0.2.2] - 2021-12-07
 ##### Changed
 - Removido varíavel comenta self.is_auth da classe Route e adicionado comentada
  na classe RouteController, para que o Developer decida ou não ativar a página
  de autenticação.
 
-#### [released]
+#### [Released]
 #### [0.2.1] - 2021-12-04
 ##### Changed
 - Adicionado variável TEMPLATE_NAME no hanokh.conf.sample para ser usado
@@ -107,7 +107,7 @@
 - Alterado para que o page_header e page_status fiquem no construtor da classe
  route.
 
-#### [released]
+#### [Released]
 #### [0.2.0] - 2021-12-03
 ##### Added
 - Framework javascript vue.js
@@ -137,12 +137,12 @@
 - Framework css kickstart
 - Framework css ink
 - Framework css flexboxgrid
-- Frameowrk css cardinal
+- Framework css cardinal
 - Framework css cirrus
 - Framework css metro
 - Framework css bootflat
 
-##### changed
+##### Changed
 - update bootstrap to 5.1.3
 
 #### [Released]
