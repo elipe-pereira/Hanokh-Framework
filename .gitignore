@@ -1,0 +1,15 @@
+.settings
+.pydevproject
+.project
+modelo.conf
+.idea/
+venv/
+__pycache__/
+hanokh.conf
+system/public_files/**
+!system/public_files/readme.md
+system/user/**
+!system/user/readme.md
+system/log/**
+!system/log/readme.md
+gunicorn.py
