@@ -1,0 +1,19 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+Environment="PROJ_BASEPATH=/usr/share/Projeto-Modelo"
+Type=notify
+User=root
+Group=root
+
+WorkingDirectory=/usr/share/Projeto-Modelo
+ExecStart=/usr/share/Projeto-Modelo/venv/bin/gunicorn -c /usr/share/Projeto-Modelo/gunicorn.py app:application
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

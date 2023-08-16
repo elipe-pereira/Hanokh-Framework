@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+      content="width=device-width,
+        initial-scale=1,
+          shrink-to-fit=no">
+    <title>{0}</title>
+    <link rel="stylesheet" href="{1}">
+    <link rel="stylesheet" href="{2}">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+</head>
+<body class='font-body-oxygen'>
+  <main>
+    <div class='bg-dark'>
+      <header class='container'>
+        <div class='row'>
+          <nav class='navbar navbar-brand shadow'>
+              <h1 class='h3 text-white font-title-slab'>VPNMGR</h1>
+          </nav>
+        </div>
+      </header>
+    </div>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-3 shadow-lg bg-body rounded mt-3'>
+          <nav class='navbar'>
+            <ul class='list-unstyled mt-4'>
+                <li class='h5 fw-bold'>
+                  OPENVPN
+                </li>
+                <li class='nav-item'>
+            		<a class='nav-link text-secondary' href='#'>
+            			<img class='me-1' src='/images/file-plus-fill.svg'
+            				alt="Criar" width="25" height="20">
+                            Adicionar
+                    </a>
+                </li>
+                 <li class='nav-item'>
+                	<a  class='nav-link text-secondary' href='#'>
+                    	<img class='me-1' src='/images/list.svg'
+                      		alt='Listar' width="25" height="20">
+                      		Listar
+                  	</a>
+                </li>
+                 <li class='nav-item'>
+                	<a class='nav-link text-secondary' href='#'>
+                    	<img class='me-1' src='/images/pencil-fill.svg'
+                      		alt='Editar' width="25" height="20">
+                      		Editar
+                  	</a>
+                </li>
+                <li class='nav-item'>
+                	<a class='nav-link text-secondary' href='#'>
+                    	<img class='me-1' src='/images/file-minus-fill.svg'
+                      		alt='Remover' width="25" height="20">
+                      		Remover
+                  	</a>
+                </li>
+            </ul>
+          </nav>
+        </div>
+        <div class='col-8 shadow-lg ms-4 mt-3 rounded'>
+          <section>
+            <header class='mt-4 ms-4'>
+            	<h4 class='h4 text-center fw-bold'>
+                	Criar usuário
+              	</h4>
+              	<hr>
+            </header>
+          </section>
+          <section>
+          <header class='h5 text-center mb-3'>
+          	Dados do usuário
+          </header>
+          
+          <form method='POST' action="/create_user/new_user">
+          	
+          	<div class='row mb-3'>
+          		<div class='col'>
+          			<label for="name">
+          				Nome
+          			</label>
+          			<input type='text' class='form-control' name='name' id='name' placeholder='Informe seu nome'>
+          		</div>
+          		<div class='col'>
+          			<label for='surname'>
+          				Sobrenome
+          			</label>
+          			<input type='text' class='form-control' name='surname' id='surname' placeholder='Sobrenome'>
+          		</div>
+          	</div>
+          	<div class='row mb-3'>
+          		<div class='col'>
+          			<label for='email'>
+          				E-mail
+          			</label>
+          			<input type='email' class='form-control' name='email' id='email' placeholder='email@dominio.com'>
+          		</div>
+          		<div class='col'>
+          			<label for='username'>
+          				Username
+	          		</label>
+          			<input type='text' class='form-control' name='username' id='username' placeholder='Usernmae' required>
+         		</div>
+         	</div>
+         	<div class='row mb-3'>
+         		<div class='col'>
+          			<label for='password'>
+          				Password
+          			</label>
+          			<input type='password' class='form-control' id='password' placeholder='Password' required>
+          		</div>
+          		<div class='col'>
+          			<label for='confirm_password'>
+          				Confirmar Password
+          			</label>
+          			<input type='password' class='form-control' id='confirm_password' placeholder='Confirme o Password' required>
+          		</div>
+			</div>
+			<div class='row mb-3'>
+				<div class='col'>
+					<input type='submit' class='btn btn-primary' value='Cadastrar'>
+				</div>
+			</div>          
+          </form>
+          </section>
+        </div>
+  </div>
+</div>
+</main>
+<div class='bg-dark position-absolute bottom-0 start-0 end-0 shadow'>
+  <div class='container'>
+    <div class='row'>
+      <footer>
+        <script src="{3}">
+        </script>
+              <p class="text-white">&copy; Todos os direitos reservados</p>
+      </footer>
+    </div>
+  </div>
+</div>
+</body>
+</html>

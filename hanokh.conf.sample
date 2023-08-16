@@ -1,0 +1,25 @@
+[hanokh]
+
+##################
+#     Página     #
+##################
+
+DOMAIN_BASE_URL= http://localhost:5000/
+TEMPLATE_NAME = start
+
+##################
+# Banco de dados #
+##################
+DATABASE_ENABLED = no
+DATABASE_TYPE = postgresql
+DATABASE_NAME = hanokh
+DATABASE_user = hanokh
+DATABASE_PASSWORD = 
+DATABASE_HOST = 127.0.0.1
+DATABASE_PORT = 5432
+
+#################
+# Depuração #####
+#################
+
+DEBUG = yes
