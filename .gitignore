@@ -3,6 +3,7 @@
 .project
 modelo.conf
 .idea/
+.idea/*
 venv/
 __pycache__/
 hanokh.conf
