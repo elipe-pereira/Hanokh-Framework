@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 # coding: utf-8
 import os
-from wsgiref.simple_server import make_server
-
+from controller.http.server_controller import ServerController
 
 class Main:
     def __init__(self):
@@ -12,17 +11,11 @@ class Main:
 
     def app(self, environ, start_response):
         start_response(self.status, self.headers)
-        return
+        return [b'Ola mundo!!']
 
     def run(self):
-        with make_server("", 8000, self.app) as httpd:
-            print("Rodando servidor na porta 8000")
-            print("Pressione Control-C para parar")
-            try:
-                httpd.serve_forever()
-            except KeyboardInterrupt:
-                print("Desligado...")
-                httpd.server_close()
+        ServerController("127.0.0.1", 8000, self.app)
+
 
 
 if __name__ == "__main__":
