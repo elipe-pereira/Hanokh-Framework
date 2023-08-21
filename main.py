@@ -3,6 +3,7 @@
 import os
 from controller.http.server_controller import ServerController
 
+
 class Main:
     def __init__(self):
         self.status = "200 OK"
@@ -15,7 +16,6 @@ class Main:
 
     def run(self):
         ServerController("127.0.0.1", 8000, self.app)
-
 
 
 if __name__ == "__main__":
