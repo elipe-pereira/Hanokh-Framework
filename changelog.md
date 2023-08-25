@@ -1,6 +1,13 @@
 ### Hanokh-framework
 ### Framework para desenvolvimento de software para web
 
+#### [Unreleased]
+#### [1.0.0]
+##### Changed
+- Mudança completa na estrutura do framework
+- Removido frameworks
+- Removido imagens
+
 #### [Released]
 #### [0.7.0]
 ##### Added

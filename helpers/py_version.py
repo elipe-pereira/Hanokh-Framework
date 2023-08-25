@@ -2,6 +2,7 @@
 # coding: utf-8
 import subprocess
 
+
 def verify_py_version():
     cmd_py_version_rtn = subprocess.run(["python3", "-V"], capture_output=True)
     raw_py_version = cmd_py_version_rtn.stdout.decode(encoding='utf-8')
@@ -13,5 +14,6 @@ def verify_py_version():
     final_py_name_version = py_name + py_version
 
     print(final_py_name_version)
+
 
 verify_py_version()

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding: utf-8
 import os
-from controller.http.server_controller import ServerController
+from app.controller.http.server_controller import ServerController
 
 
 class Main:
