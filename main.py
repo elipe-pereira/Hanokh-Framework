@@ -12,6 +12,8 @@ class Main:
         self.headers = [("Content-type", "text/html; charset=utf-8")]
         self.base_path = os.path.dirname(os.path.realpath(__file__))
         self.config = Config(self.base_path)
+        self.server_ip = ""
+        self.server_port = ""
         if self.base_path not in sys.path:
             sys.path.append(self.base_path)
 
@@ -20,7 +22,11 @@ class Main:
         return [b'Ola mundo!!']
 
     def run(self):
-        ServerController("127.0.0.1", 8000, self.app)
+        self.config.read_settings()
+        self.server_ip = self.config.get_ip_srv()
+        self.server_port = self.config.get_port_srv()
+
+        ServerController(self.server_ip, self.server_port, self.app)
 
 
 if __name__ == "__main__":
