@@ -4,9 +4,9 @@
 #### [Unreleased]
 #### [1.0.0]
 ##### Changed
-- Mudança completa na estrutura do framework
-- Removido frameworks
-- Removido imagens
+- Mudança completa na estrutura de pastas do framework.
+- Removido frameworks frontend.
+- Removido imagens de ícones.
 
 #### [Released]
 #### [0.7.0]
