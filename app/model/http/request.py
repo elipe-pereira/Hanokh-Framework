@@ -2,7 +2,7 @@
 # coding: utf-8
 
 from urllib.parse import parse_qs
-from app.application import Log
+from app.app_manager import Log
 
 
 class Request(object):

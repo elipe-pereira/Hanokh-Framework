@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # coding: utf-8
 
-from app.application import Hash
-from app.application import Cookie
-from app.application import Log
+from app.app_manager import Hash
+from app.app_manager import Cookie
+from app.app_manager import Log
 
 
 class Auth(object):

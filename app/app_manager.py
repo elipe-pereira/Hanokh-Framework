@@ -1,43 +1,43 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from model.debug.log import Log
-from model.auth.auth import Auth
-from model.http.status import Status
-from model.http.header import Header
-from model.http.request import Request
-from controller.route import RouteController
-from controller.assets.assets import AssetsController
-from controller.assets.read_assets import ReadAssetsController
-from controller.download.public_download import PublicDownloadController
-from controller.download.private_download import PrivateDownloadController
+from app.model.conf.config import Config
+from app.model.debug.log import Log
+from app.model.auth.auth import Auth
+from app.model.http.status import Status
+from app.model.http.header import Header
+from app.model.http.request import Request
+from app.controller.route import RouteController
+from app.controller.assets.assets import AssetsController
+from app.controller.assets.read_assets import ReadAssetsController
+from app.controller.download.public_download import PublicDownloadController
+from app.controller.download.private_download import PrivateDownloadController
 
 
-class Application:
-    def __int__(self):
+class AppManager:
+    def __init__(self, base_path):
+        self.proj_base_path = base_path
         self.debug = Log()
         self.header = Header()
         self.status = Status()
         self.assets = AssetsController()
-        self.database_is_enabled = ""
+        self.conf = Config(self.proj_base_path)
+        self.conf.read_settings()
+        self.database_is_enabled = self.conf.get_database_is_enabled()
 
     def get_app(self, environ, start_response):
-        debug = Log()
-        debug.log_applogo()
-        debug.log_start("application")
-        header = Header()
-        status = Status()
+        self.debug.log_applogo()
+        self.debug.log_start("application")
         assets = AssetsController()
-        database_is_enabled = proj.DATABASE_ENABLED
         wsgi_input = environ['wsgi.input'].read()
         request = Request(environ, wsgi_input)
 
         path = environ['PATH_INFO']
-        debug.log_variable("path", path)
+        self.debug.log_variable("path", path)
 
-        if database_is_enabled == "yes":
-            auth = Auth(header, request)
-            route = RouteController(environ, header, status, auth.is_auth())
+        if self.database_is_enabled == "yes":
+            auth = Auth(self.header, request)
+            route = RouteController(environ, self.header, self.status, auth.is_auth())
 
             pages_auth_routes = route.get_auth_routes().keys()
             pages_unauth_routes = route.get_unauth_routes().keys()
@@ -55,7 +55,7 @@ class Application:
             is_asset = assets.is_asset(path)
 
             if is_asset:
-                read_asset = ReadAssetsController(header, request)
+                read_asset = ReadAssetsController(self.header, request)
                 data = read_asset.read(path)
                 asset = data[0]
                 status = data[2]
@@ -69,7 +69,7 @@ class Application:
             is_downloadable = files_to_download.is_downloadable(path)
 
             if is_downloadable:
-                read_asset = ReadAssetsController(header, request)
+                read_asset = ReadAssetsController(self.header, request)
                 data = read_asset.read_downloadable(path)
                 file = data[0]
                 status = data[2]
@@ -79,11 +79,11 @@ class Application:
 
                 return iter([file])
 
-            files_pvt_to_download = PrivateDownloadController(header, request)
+            files_pvt_to_download = PrivateDownloadController(self.header, request)
             is_pvt_downloadable = files_pvt_to_download.is_private_downloadable(path)
 
             if is_pvt_downloadable:
-                read_asset = ReadAssetsController(header, request)
+                read_asset = ReadAssetsController(self.header, request)
                 data = read_asset.read_private_downloadable(path)
                 file = data[0]
                 status = data[2]
@@ -104,7 +104,7 @@ class Application:
                 return iter([page])
 
         else:
-            route = RouteController(environ, header, status, False)
+            route = RouteController(environ, self.header, self.status, False)
             pages_unauth_routes = route.get_unauth_routes().keys()
 
             if path in pages_unauth_routes:
@@ -120,7 +120,7 @@ class Application:
             is_asset = assets.is_asset(path)
 
             if is_asset:
-                read_asset = ReadAssetsController(header, request)
+                read_asset = ReadAssetsController(self.header, request)
                 data = read_asset.read(path)
                 asset = data[0]
                 status = data[2]
@@ -134,7 +134,7 @@ class Application:
             is_downloadable = files_to_download.is_downloadable(path)
 
             if is_downloadable:
-                read_asset = ReadAssetsController(header, request)
+                read_asset = ReadAssetsController(self.header, request)
                 data = read_asset.read_downloadable(path)
                 file = data[0]
                 status = data[2]
@@ -145,7 +145,7 @@ class Application:
                 return iter([file])
 
             else:
-                route = RouteController(environ, header, status, False)
+                route = RouteController(environ, self.header, self.status, False)
 
                 path = "/404"
                 data = route.get_route(path)

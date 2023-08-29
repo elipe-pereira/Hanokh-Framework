@@ -2,7 +2,7 @@
 # coding: utf-8
 
 from conf import proj_config as proj
-from app.application import Template
+from app.app_manager import Template
 
 
 class Login(object):

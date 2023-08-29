@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # coding: utf-8
-from app.application import Server
+from app.model.http.server import Server
 
 
 class ServerController:

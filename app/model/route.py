@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from app.application import Log
-from app.application import Cookie
-from app.application import Start
-from app.application import Login
-from app.application import Auth
-from app.application import Error404
+from app.app_manager import Log
+from app.app_manager import Cookie
+from app.app_manager import Start
+from app.app_manager import Login
+from app.app_manager import Auth
+from app.app_manager import Error404
 
 
 class Route(object):

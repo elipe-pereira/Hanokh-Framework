@@ -2,11 +2,11 @@
 # coding: utf-8
 
 import mimetypes
-from app.application import Assets
-from app.application import Status
-from app.application import PublicDownload
-from app.application import PrivateDownload
-from app.application import Log
+from app.app_manager import Assets
+from app.app_manager import Status
+from app.app_manager import PublicDownload
+from app.app_manager import PrivateDownload
+from app.app_manager import Log
 
 
 class ReadAssets(object):

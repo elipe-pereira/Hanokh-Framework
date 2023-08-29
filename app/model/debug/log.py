@@ -3,7 +3,7 @@
 
 import logging
 from conf import proj_config as proj
-from app.application import Text
+from app.app_manager import Text
 
 
 class Log(object):

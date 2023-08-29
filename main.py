@@ -2,8 +2,9 @@
 # coding: utf-8
 import os
 import sys
-from app.controller.http.server_controller import ServerController
+from app.app_manager import AppManager
 from app.model.conf.config import Config
+from app.controller.http.server_controller import ServerController
 
 
 class Main:
@@ -12,6 +13,7 @@ class Main:
         self.headers = [("Content-type", "text/html; charset=utf-8")]
         self.base_path = os.path.dirname(os.path.realpath(__file__))
         self.config = Config(self.base_path)
+        self.app_manager = AppManager(self.base_path)
         self.server_ip = ""
         self.server_port = ""
         if self.base_path not in sys.path:
@@ -19,7 +21,7 @@ class Main:
 
     def app(self, environ, start_response):
         start_response(self.status, self.headers)
-        return [b'Ola mundo!!']
+        return [b'Ola mundo']
 
     def run(self):
         self.config.read_settings()

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from app.application import Log
-from app.application import PrivateDownload
+from app.app_manager import Log
+from app.app_manager import PrivateDownload
 
 
 class PrivateDownloadController(PrivateDownload):

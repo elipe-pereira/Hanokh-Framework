@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from app.application import Route
-from app.application import Log
+from app.app_manager import Route
+from app.app_manager import Log
 
 
 class RouteController(Route):

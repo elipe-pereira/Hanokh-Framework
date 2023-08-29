@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding: utf-8
 
-from app.application import Log
+from app.app_manager import Log
 
 
 class Header(object):

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from conf import proj_config as proj
-from app.application import Log
+from app.app_manager import Log
 
 
 class Template:

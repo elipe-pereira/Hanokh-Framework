@@ -75,4 +75,4 @@ class Config:
         self.db_host = self.parser.get(self.sct_app_name, 'db_host')
         self.db_port = self.parser.get(self.sct_app_name, 'db_port')
         self.ip_srv = self.parser.get(self.sct_server, 'host')
-        self.port_srv = self.parser.get(self.sct_server, 'port')
+        self.port_srv = int(self.parser.get(self.sct_server, 'port'))
