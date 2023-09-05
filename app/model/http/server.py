@@ -7,7 +7,7 @@ class Server:
     def __init__(self):
         self.port = 8000
         self.host_ip = "127.0.0.1"
-        self.app = ""
+        self.app = None
 
     def set_port(self, port):
         self.port = port

@@ -1,54 +1,61 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from app.model.conf.config import Config
-from app.model.debug.log import Log
+from app.model.route import Route
 from app.model.auth.auth import Auth
-from app.model.http.status import Status
-from app.model.http.header import Header
-from app.model.http.request import Request
-from app.controller.route import RouteController
-from app.controller.assets.assets import AssetsController
-from app.controller.assets.read_assets import ReadAssetsController
-from app.controller.download.public_download import PublicDownloadController
-from app.controller.download.private_download import PrivateDownloadController
+from app.model.auth.request import Request
+from app.model.assets.assets import Assets
 
 
-class AppManager:
-    def __init__(self, base_path):
-        self.proj_base_path = base_path
-        self.debug = Log()
-        self.header = Header()
-        self.status = Status()
-        self.assets = AssetsController()
-        self.conf = Config(self.proj_base_path)
-        self.conf.read_settings()
+class RequestManager:
+    def __init__(self):
+        self.proj_base_path = None
+        self.wsgi_input = None
+        self.environ = None
+        self.path = None
+        self.conf = None
         self.database_is_enabled = self.conf.get_database_is_enabled()
+        # self.debug = Log()
+        self.header = None
+        self.status = None
+        self.assets = Assets()
+        self.request = Request(environ, self.wsgi_input)
+        self.auth = Auth(self.header, self.request)
+        self.route = Route(self.environ, self.header, self.status, self.auth.is_auth())
+        self.pages_auth_routes = self.route.get_auth_routes_html().keys()
+        self.pages_unauth_routes = self.route.get_unauth_routes_html()
+        self.pages_auth_routes_json = self.route.get_auth_routes_json()
+        self.pages_unauth_routes_json = self.route.get_unauth_routes_json()
 
-    def get_app(self, environ, start_response):
-        self.debug.log_applogo()
-        self.debug.log_start("application")
-        assets = AssetsController()
-        wsgi_input = environ['wsgi.input'].read()
-        request = Request(environ, wsgi_input)
+    def set_request_status(self, status):
+        self.status = status
 
-        path = environ['PATH_INFO']
-        self.debug.log_variable("path", path)
+    def set_request_header(self, header):
+        self.header = header
+
+    def set_request_input(self, wsgi_input):
+        self.wsgi_input = wsgi_input
+
+    def set_request_environ(self, environ):
+        self.environ = environ
+
+    def set_request_basepath(self, base_path):
+        self.proj_base_path = base_path
+
+    def set_request_conf(self, conf):
+        self.conf = conf
+
+    def get_response(self):
+        # self.debug.log_applogo()
+        # self.debug.log_start("application")
+        # self.debug.log_variable("path", self.path)
 
         if self.database_is_enabled == "yes":
-            auth = Auth(self.header, request)
-            route = RouteController(environ, self.header, self.status, auth.is_auth())
-
-            pages_auth_routes = route.get_auth_routes().keys()
-            pages_unauth_routes = route.get_unauth_routes().keys()
-
-            if path in pages_auth_routes or path in pages_unauth_routes:
-                data = route.get_route(path)
+            if self.path in self.pages_auth_routes or self.path in self.pages_unauth_routes:
+                data = self.route.get_route(self.path)
                 page = bytes(str(data[0]), "utf-8")
                 status = data[2]
                 response_headers = data[1]
-
-                start_response(status, response_headers)
 
                 return iter([page])
 
@@ -61,8 +68,6 @@ class AppManager:
                 status = data[2]
                 response_headers = data[1]
 
-                start_response(status, response_headers)
-
                 return iter([asset])
 
             files_to_download = PublicDownloadController()
@@ -74,8 +79,6 @@ class AppManager:
                 file = data[0]
                 status = data[2]
                 response_headers = data[1]
-
-                start_response(status, response_headers)
 
                 return iter([file])
 
@@ -89,8 +92,6 @@ class AppManager:
                 status = data[2]
                 response_headers = data[1]
 
-                start_response(status, response_headers)
-
                 return iter([file])
             else:
                 path = "/404"
@@ -98,8 +99,6 @@ class AppManager:
                 page = bytes(str(data[0]), "utf-8")
                 status = data[2]
                 response_headers = data[1]
-
-                start_response(status, response_headers)
 
                 return iter([page])
 
@@ -113,8 +112,6 @@ class AppManager:
                 status = data[2]
                 response_headers = data[1]
 
-                start_response(status, response_headers)
-
                 return iter([page])
 
             is_asset = assets.is_asset(path)
@@ -125,8 +122,6 @@ class AppManager:
                 asset = data[0]
                 status = data[2]
                 response_headers = data[1]
-
-                start_response(status, response_headers)
 
                 return iter([asset])
 
@@ -140,8 +135,6 @@ class AppManager:
                 status = data[2]
                 response_headers = data[1]
 
-                start_response(status, response_headers)
-
                 return iter([file])
 
             else:
@@ -152,7 +145,5 @@ class AppManager:
                 page = bytes(str(data[0]), "utf-8")
                 status = data[2]
                 response_headers = data[1]
-
-                start_response(status, response_headers)
 
                 return iter([page])

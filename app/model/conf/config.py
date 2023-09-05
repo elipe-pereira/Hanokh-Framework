@@ -4,25 +4,27 @@ from configparser import ConfigParser
 
 
 class Config:
-    def __init__(self, base_path):
-        self.base_path = base_path
-        self.parser = ConfigParser()
-        self.cfg_file = self.base_path + "/conf/app.conf"
-        self.tpl_name = ""
-        self.base_uri = ""
-        self.db_is_enabled = ""
-        self.db_type = ""
-        self.db_name = ""
-        self.db_user = ""
-        self.db_passwd = ""
-        self.db_host = ""
-        self.db_port = ""
-        self.ip_srv = ""
-        self.port_srv = ""
-        self.dbg = ""
-        "About section on config file ([section_name])"
+    def __init__(self):
+        self.dbg = None
+        self.ip_srv = None
+        self.port_srv = None
+        self.db_is_enabled = None
+        self.db_host = None
+        self.db_port = None
+        self.db_name = None
+        self.db_user = None
+        self.db_passwd = None
+        self.db_type = None
+        self.tpl_name = None
+        self.base_uri = None
+        self.base_path = None
+        self.cfg_file = None
         self.sct_app_name = "app"
         self.sct_server = "server"
+        self.parser = ConfigParser()
+
+    def set_base_path(self, base_path):
+        self.base_path = base_path
 
     def get_base_path(self):
         return self.base_path
@@ -64,6 +66,7 @@ class Config:
         return self.dbg
 
     def read_settings(self):
+        self.cfg_file = self.base_path + "/conf/app.conf"
         self.parser.read(self.cfg_file)
         self.tpl_name = self.parser.get(self.sct_app_name, 'tpl_name')
         self.base_uri = self.parser.get(self.sct_app_name, 'base_url')

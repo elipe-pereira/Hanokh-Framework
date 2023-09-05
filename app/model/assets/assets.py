@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from app.app_manager import Log
+from app.request_manager import Log
 from conf import proj_config as proj
 
 

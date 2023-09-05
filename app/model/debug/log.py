@@ -2,8 +2,7 @@
 # coding: utf-8
 
 import logging
-from conf import proj_config as proj
-from app.app_manager import Text
+from app.model.debug.text import Text
 
 
 class Log(object):

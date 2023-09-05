@@ -2,33 +2,50 @@
 # coding: utf-8
 import os
 import sys
-from app.app_manager import AppManager
 from app.model.conf.config import Config
-from app.controller.http.server_controller import ServerController
+from app.model.http.status import Status
+from app.model.http.header import Header
+from app.model.http.server import Server
+from app.request_manager import RequestManager
 
 
 class Main:
     def __init__(self):
-        self.status = "200 OK"
-        self.headers = [("Content-type", "text/html; charset=utf-8")]
+        # self.status = "200 OK"
+        # self.headers = [("Content-type", "text/html; charset=utf-8")]
+        self.environ = None
+        self.server_ip = None
+        self.wsgi_input = None
+        self.server_port = None
+        self.start_response = None
         self.base_path = os.path.dirname(os.path.realpath(__file__))
-        self.config = Config(self.base_path)
-        self.app_manager = AppManager(self.base_path)
-        self.server_ip = ""
-        self.server_port = ""
+        self.server = Server()
+        self.status = Status()
+        self.header = Header()
+        self.config = Config()
+        self.request_manager = RequestManager()
         if self.base_path not in sys.path:
             sys.path.append(self.base_path)
 
     def app(self, environ, start_response):
-        start_response(self.status, self.headers)
-        return [b'Ola mundo']
+        self.environ = environ
+        self.start_response = start_response
+        self.wsgi_input = self.environ['wsgi.input']
+
+        start_response(self.status.get_status(), self.header.get_header())
+
+        return self.request_manager.get_response()
 
     def run(self):
+        self.config.set_base_path(self.base_path)
         self.config.read_settings()
         self.server_ip = self.config.get_ip_srv()
         self.server_port = self.config.get_port_srv()
+        self.server.set_host_ip(self.server_ip)
+        self.server.set_port(self.server_port)
+        self.server.set_app(self.app)
 
-        ServerController(self.server_ip, self.server_port, self.app)
+        self.server.run_server()
 
 
 if __name__ == "__main__":

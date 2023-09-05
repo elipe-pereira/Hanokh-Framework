@@ -2,7 +2,7 @@
 # coding: utf-8
 
 from conf import proj_config as proj
-from app.app_manager import Template
+from app.model.template.template import Template
 
 
 class Auth(object):
