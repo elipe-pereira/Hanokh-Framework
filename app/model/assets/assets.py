@@ -1,24 +1,23 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from app.request_manager import Log
-from conf import proj_config as proj
+from app.model.debug.log import Log
 
 
 class Assets(object):
-    def __init__(self):
+    def __init__(self, base_path):
         self.debug = Log()
         self.debug.log_class("Assets")
-        self.bpath = proj.BASEPATH
+        self.base_path = base_path
         self.favico = "/view/assets/images/favicon.ico"
         self.btstrap = "/view/assets/css/bootstrap5/bootstrap.min.css"
         self.btstrap_js = "/view/assets/js/bootstrap5/bootstrap.bundle.min.js"
         self.hnk_css = "/view/assets/css/hanokh/hanokh.css"
         self.map_assets = {
-            "/favicon.ico": self.bpath + self.favico,
-            "/css/bootstrap.min.css": self.bpath + self.btstrap,
-            "/js/bootstrap.bundle.min.js": self.bpath + self.btstrap_js,
-            "/css/hanokh.css": self.bpath + self.hnk_css
+            "/favicon.ico": self.base_path + self.favico,
+            "/css/bootstrap.min.css": self.base_path + self.btstrap,
+            "/js/bootstrap.bundle.min.js": self.base_path + self.btstrap_js,
+            "/css/hanokh.css": self.base_path + self.hnk_css
         }
 
     def get_map_assets(self):

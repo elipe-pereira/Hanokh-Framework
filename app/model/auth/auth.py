@@ -7,8 +7,8 @@ from app.model.http.cookie import Cookie
 
 
 class Auth(object):
-    def __init__(self, header, request):
-        self.request = request
+    def __init__(self, header, auth_request):
+        self.auth_request = auth_request
         self.hash = Hash()
         self.header = header
         self.user_input = ""
@@ -24,10 +24,10 @@ class Auth(object):
         # self.debug.log_class("Auth")
 
     def is_auth(self):
-        self.user_cookie = self.request.get_user_cookie_input()
+        self.user_cookie = self.auth_request.get_user_cookie_input()
         # self.debug.log_variable("self.user_cookie", self.user_cookie)
 
-        self.ssid = self.request.get_ssid_cookie_input()
+        self.ssid = self.auth_request.get_ssid_cookie_input()
         # self.debug.log_variable("self.ssid", self.ssid)
 
         self.ssid_on_db = self.hash.get_hash_on_database(self.user_cookie)
@@ -40,10 +40,10 @@ class Auth(object):
         if self.is_ssid_valid:
             return True
         else:
-            self.user_input = self.request.get_username_input()
+            self.user_input = self.auth_request.get_username_input()
             # self.debug.log_variable("self.user_input", self.user_input)
 
-            self.pass_input = self.request.get_password_input()
+            self.pass_input = self.auth_request.get_password_input()
             # self.debug.log_variable("self.pass_input", self.pass_input)
 
             self.hash.set_hash(self.user_input, self.pass_input)

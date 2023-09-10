@@ -86,7 +86,7 @@ class Route(object):
                     self.header.set_header([('Content-type', 'text/html')])
                     self.html_page = self.html_page().load()
 
-                return self.html_page, self.header.get_header(), self.status.get_status()
+                return self.html_page
             else:
                 if self.path in self.auth_routes_json[self.path]:
                     self.json_page = self.auth_routes_json[self.path]
@@ -94,7 +94,7 @@ class Route(object):
                     self.header.set_header([('Content-type', 'text/json')])
                     self.json_page = self.json_page().load()
 
-                    return self.json_page, self.header.get_header(), self.status.get_status()
+                    return self.json_page
 
         else:
             # self.debug.log("Não autenticado")
@@ -114,7 +114,7 @@ class Route(object):
                     self.status.set_status("200 OK")
                     self.header.set_header([('Content-type', 'text/html')])
 
-                return self.html_page, self.header.get_header(), self.status.get_status()
+                return self.html_page
             else:
                 if self.path in self.unauth_routes_json:
                     self.json_page = self.unauth_routes_json[self.path]
@@ -126,4 +126,4 @@ class Route(object):
                     self.status.set_status("200 OK")
                     self.header.set_header([('Content-type', 'text/json')])
 
-                    return self.json_page, self.header.get_header(), self.status.get_status()
+                    return self.json_page

@@ -5,7 +5,7 @@ from urllib.parse import parse_qs
 # from app.model.debug.log import Log
 
 
-class Request(object):
+class AuthRequest:
     def __init__(self, environ, wsgi_input):
         # self.debug = Log()
         # self.debug.log_class("Request")
@@ -18,7 +18,7 @@ class Request(object):
 
         try:
             self.cookie_request = self.environ['HTTP_COOKIE'].split(" ")
-        except Exception:
+        except:
             pass
 
         self.user_cookie = ""

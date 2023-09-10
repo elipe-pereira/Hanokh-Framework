@@ -29,10 +29,16 @@ class Main:
 
     def app(self, environ, start_response):
         self.environ = environ
-        self.start_response = start_response
         self.wsgi_input = self.environ['wsgi.input']
+        self.request_manager.set_request_environ(self.environ)
+        self.request_manager.set_request_status(self.status)
+        self.request_manager.set_request_header(self.header)
+        self.request_manager.set_request_input(self.wsgi_input)
+        self.request_manager.set_request_basepath(self.base_path)
+        self.request_manager.set_request_conf(self.config)
 
-        start_response(self.status.get_status(), self.header.get_header())
+        self.start_response = start_response
+        self.start_response(self.status.get_status(), self.header.get_header())
 
         return self.request_manager.get_response()
 

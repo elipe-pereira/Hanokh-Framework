@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from app.model.downloadables.download import Download
 from app.model.auth.auth import Auth
 # from app.model.debug.log import Log
+from app.model.downloadables.download import Download
 
 
-class PrivateDownload(object):
-    def __init__(self, header, request):
+class PrivateDownload:
+    def __init__(self, base_path, header, status, auth_request):
         # self.debug = Log()
+        self.base_path = base_path
         self.header = header
-        self.download = Download()
-        self.request = request
-        self.username = self.request.get_user_cookie_input()
+        self.status = status
+        self.download = Download(self.base_path)
+        self.auth_request = auth_request
+        self.username = self.auth_request.get_user_cookie_input()
         self.files_base_dir = "/system/user"
 
         if self.username:
@@ -20,7 +22,7 @@ class PrivateDownload(object):
 
         self.dir_download = ""
         self.private_files_dir = ""
-        self.auth = Auth(self.header, self.request)
+        self.auth = Auth(self.header, self.auth_request)
         # self.debug.log_class("PrivateDownload")
 
     def set_private_files_dir(self, private_files_dir):

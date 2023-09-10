@@ -2,22 +2,22 @@
 # coding: utf-8
 
 import mimetypes
-from app.request_manager import Assets
-from app.request_manager import Status
-from app.request_manager import PublicDownload
-from app.request_manager import PrivateDownload
-from app.request_manager import Log
+from app.model.debug.log import Log
+from app.model.assets.assets import Assets
+from app.model.downloadables.public_download import PublicDownload
+from app.model.downloadables.private_download import PrivateDownload
 
 
-class ReadAssets(object):
-    def __init__(self, header, request):
+class ReadAssets:
+    def __init__(self, base_path, header, status, auth_request):
+        self.base_path = base_path
         self.file_type = ""
-        self.request = request
+        self.auth_request = auth_request
         self.header = header
-        self.assets = Assets()
-        self.status = Status()
-        self.download = PublicDownload()
-        self.private_download = PrivateDownload(self.header, self.request)
+        self.assets = Assets(self.base_path)
+        self.status = status
+        self.download = PublicDownload(self.base_path)
+        self.private_download = PrivateDownload(self.base_path, self.header, self.status, self.auth_request)
         self.debug = Log()
         self.debug.log_class("ReadAssets")
         mimetypes.init()
@@ -31,6 +31,7 @@ class ReadAssets(object):
             file = open(item, 'rb').read()
             self.file_type = mimetypes.guess_type(item)
             self.header.set_header([('Content-Type', self.file_type[0])])
+            self.status.set_status("200 OK")
 
             return file, self.header.get_header(), self.status.get_status()
 
@@ -38,7 +39,7 @@ class ReadAssets(object):
             self.header.set_header([('Content-Type', None)])
             self.status.set_status("404 Not Found")
 
-            return file, self.header.get_header(), self.status.get_status()
+            return file
 
     def read_downloadable(self, path_info):
         self.debug.log("Lendo arquivo baixável")
@@ -49,14 +50,15 @@ class ReadAssets(object):
             file = open(downloadable, 'rb').read()
             self.file_type = mimetypes.guess_type(downloadable)
             self.header.set_header([('Content-Type', self.file_type[0])])
+            self.status.set_status("200 OK")
 
-            return file, self.header.get_header(), self.status.get_status()
+            return file
 
         else:
             self.header.set_header([('Content-Type', None)])
             self.status.set_status("404 Not Found")
 
-            return file, self.header.get_header(), self.status.get_status()
+            return file
 
     def read_private_downloadable(self, path_info):
         self.debug.log("Acessando método read_private_downloadable() ")
@@ -73,8 +75,9 @@ class ReadAssets(object):
             self.file_type = mimetypes.guess_type(private_downloadable)
 
             self.header.set_header([('Content-Type', self.file_type[0])])
+            self.status.set_status("200 OK")
 
-            return file, self.header.get_header(), self.status.get_status()
+            return file
 
         else:
             self.debug.log("Arquivo não downloadable")
@@ -82,4 +85,4 @@ class ReadAssets(object):
             self.header.set_header([('Content-Type', None)])
             self.status.set_status("404 Not Found")
 
-            return file, self.header.get_header(), self.status.get_status()
+            return file

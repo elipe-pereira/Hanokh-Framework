@@ -2,22 +2,21 @@
 # coding: utf-8
 
 # from app.model.debug.log import Log
-from conf import proj_config as proj
-import mimetypes
 import os
+import mimetypes
 
 
-class Download(object):
-    def __init__(self):
+class Download:
+    def __init__(self, base_path):
         # self.debug = Log()
         # self.debug.log_class("Download")
-        self.bpath = proj.BASEPATH
+        self.base_path = base_path
         self.route_prefix = "/samples"
         self.route_files = {}
-        self.routed_files = ""
+        self.routed_file = ""
         self.files_dir = "/system/public_files"
         self.file_path = ""
-        self.full_path_files = self.bpath + self.files_dir
+        self.full_path_files = self.base_path + self.files_dir
         mimetypes.init()
 
     def set_route_prefix(self, route_prefix):
@@ -29,7 +28,7 @@ class Download(object):
         # self.debug.log_act("self.files_dir", self.files_dir, "set")
 
     def create_routes_to_download(self):
-        self.full_path_files = self.bpath + self.files_dir
+        self.full_path_files = self.base_path + self.files_dir
         # self.debug.log_variable("self.full_path_files", self.full_path_files)
 
         if not os.path.isdir(self.full_path_files):

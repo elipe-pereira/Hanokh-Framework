@@ -6,7 +6,8 @@ from app.model.downloadables.download import Download
 
 
 class PublicDownload(Download):
-    def __init__(self):
+    def __init__(self, base_path):
+        self.base_path = base_path
         # self.debug = Log()
         # self.debug.log_class("PublicDownload")
-        Download.__init__(self)
+        Download.__init__(self, self.base_path)
