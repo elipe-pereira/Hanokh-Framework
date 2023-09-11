@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from conf import proj_config as proj
-from app.request_manager import Log
+from app.model.debug.log import Log
 
 
 class Template:

@@ -54,7 +54,7 @@ class RequestManager:
         self.database_is_enabled = self.conf.get_database_is_enabled()
         self.auth_request = AuthRequest(self.environ, self.wsgi_input)
         self.auth = Auth(self.header, self.auth_request)
-        self.route = Route(self.environ, self.header, self.status, self.auth.is_auth())
+        self.route = Route(self.base_path, self.header, self.status, self.auth.is_auth())
         self.pages_auth_routes = self.route.get_auth_routes_html().keys()
         self.pages_unauth_routes = self.route.get_unauth_routes_html().keys()
         self.pages_auth_routes_json = self.route.get_auth_routes_json().keys()
@@ -116,7 +116,7 @@ class RequestManager:
                 return iter([page])
 
         else:
-            self.route = Route(self.environ, self.header, self.status, False)
+            self.route = Route(self.base_path, self.header, self.status, False)
 
             if (
                     self.path in self.pages_unauth_routes
@@ -145,7 +145,7 @@ class RequestManager:
                 return iter([file])
 
             else:
-                self.route = Route(self.environ, self.header, self.status, False)
+                self.route = Route(self.base_path, self.header, self.status, False)
 
                 self.path = "/404"
                 page = self.route.get_route(self.path)

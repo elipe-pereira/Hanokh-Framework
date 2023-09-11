@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from conf import proj_config as proj
-from app.request_manager import Template
+from app.model.template.template import Template
 
 
 class Start(object):
-    def __init__(self):
-        self.title = "Página inicial"
+    def __init__(self, config):
+        self.config = config
+        self.page_title = "Página inicial"
+        self.page = ""
         self.bootstrap_css = "/css/bootstrap.min.css"
         self.hanokh_css = "/css/hanokh.css"
         self.bootstrap_js = "/js/bootstrap.bundle.min.js"
         self.hanokh_js = ""
-        self.domain_base_url = proj.DOMAIN_BASE_URL
+        self.domain_base_url = self.config.get_base_uri()
         self.page_template = Template()
 
     def load(self):
@@ -26,7 +27,7 @@ class Start(object):
 
         self.page_title = "Página inicial"
         self.page = str(self.page).format(
-            self.title,
+            self.page_title,
             self.bootstrap_css,
             self.hanokh_css
         )

@@ -11,8 +11,6 @@ from app.request_manager import RequestManager
 
 class Main:
     def __init__(self):
-        # self.status = "200 OK"
-        # self.headers = [("Content-type", "text/html; charset=utf-8")]
         self.environ = None
         self.server_ip = None
         self.wsgi_input = None

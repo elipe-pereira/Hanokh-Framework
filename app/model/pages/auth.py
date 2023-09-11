@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from conf import proj_config as proj
 from app.model.template.template import Template
 
 
 class Auth(object):
-    def __init__(self, is_auth):
+    def __init__(self, config, is_auth):
+        self.config = config
         self.title = "Autenticado com sucesso!!!"
         self.bootstrap_css = "/css/bootstrap.min.css"
         self.hanokh_css = "/css/hanokh.css"
         self.bootstrap_js = "/js/bootstrap.bundle.min.js"
         self.hanokh_js = "/js/bootstrap.bundle.min.js"
-        self.domain_base_url = proj.DOMAIN_BASE_URL
+        self.domain_base_url = config.get_base_uri()
         self.page_template = Template()
         self.is_auth = is_auth
 

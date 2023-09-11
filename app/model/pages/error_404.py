@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from conf import proj_config as proj
-from app.request_manager import Template
+from app.model.template.template import Template
 
 
-class Error404(object):
-    def __init__(self):
+class Error404:
+    def __init__(self, config):
+        self.config = config
         self.page = ""
         self.css = "/css/bootstrap.min.css"
         self.hanokh_css = "/css/hanokh.css"
         self.js = "/js/bootstrap.bundle.min.js"
         self.page_title = "HANOKH"
         self.processed_data = ""
-        self.domain_base_url = proj.DOMAIN_BASE_URL
+        self.domain_base_url = self.config.get_base_uri()
         self.page_template = Template()
 
     def load(self):

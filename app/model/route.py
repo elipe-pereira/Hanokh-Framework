@@ -11,13 +11,13 @@ from app.model.pages.auth import Auth
 from app.model.pages.start import Start
 from app.model.pages.login import Login
 from app.model.http.cookie import Cookie
+from app.model.conf.config import Config
 from app.model.pages.error_404 import Error404
 
 
-class Route(object):
-    def __init__(self, environ, header, status, is_auth=False):
-        self.environ = environ
-        self.route = self.environ['PATH_INFO']
+class Route:
+    def __init__(self, base_path, header, status, is_auth=False):
+        self.base_path = base_path
         self.header = header
         self.status = status
         self.cookie = Cookie()
@@ -41,6 +41,9 @@ class Route(object):
         }
         self.auth_routes_json = {}
         self.unauth_routes_json = {}
+        self.config = Config()
+        self.config.set_base_path(self.base_path)
+        self.config.read_settings()
 
     def get_auth_routes_html(self):
         return self.auth_routes_html
@@ -70,7 +73,7 @@ class Route(object):
             if self.path in self.auth_routes_html:
                 self.html_page = self.auth_routes_html[self.path]
                 if self.path == "/auth":
-                    self.html_page = self.html_page(self.is_auth).load()
+                    self.html_page = self.html_page(self.config, self.is_auth).load()
                 elif self.path == "/login":
                     self.cookie.clean_cookie_ssid()
                     self.cookie.clean_cookie_user()
@@ -81,10 +84,11 @@ class Route(object):
                         ('set-cookie', self.cookie.get_cookie_user())
 
                     ])
-                    self.html_page = self.html_page().load()
+                    self.html_page = self.html_page(self.config).load()
                 else:
                     self.header.set_header([('Content-type', 'text/html')])
-                    self.html_page = self.html_page().load()
+                    self.status.set_status("200 OK")
+                    self.html_page = self.html_page(self.config).load()
 
                 return self.html_page
             else:
@@ -92,7 +96,7 @@ class Route(object):
                     self.json_page = self.auth_routes_json[self.path]
                     self.status.set_status("200 OK")
                     self.header.set_header([('Content-type', 'text/json')])
-                    self.json_page = self.json_page().load()
+                    self.json_page = self.json_page(self.config).load()
 
                     return self.json_page
 
@@ -106,11 +110,11 @@ class Route(object):
                     Verificar o uso do try/catch aqui
                     Se já foi feito, apagar comentário
                     """
-                    self.html_page = self.html_page(self.is_auth).load()
+                    self.html_page = self.html_page(self.config, self.is_auth).load()
                     self.status.set_status("200 OK")
                     self.header.set_header([('Content-type', 'text/html')])
                 else:
-                    self.html_page = self.html_page().load()
+                    self.html_page = self.html_page(self.config).load()
                     self.status.set_status("200 OK")
                     self.header.set_header([('Content-type', 'text/html')])
 
@@ -122,7 +126,7 @@ class Route(object):
                     Verificar o uso do try/catch aqui.
                     se já foi feito, apagar comentário.
                     """
-                    self.json_page = self.json_page().load()
+                    self.json_page = self.json_page(self.config).load()
                     self.status.set_status("200 OK")
                     self.header.set_header([('Content-type', 'text/json')])
 
