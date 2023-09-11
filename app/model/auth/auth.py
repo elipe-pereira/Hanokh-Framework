@@ -6,11 +6,14 @@ from app.model.auth.hash import Hash
 from app.model.http.cookie import Cookie
 
 
-class Auth(object):
-    def __init__(self, header, auth_request):
+class Auth:
+    def __init__(self, base_path, config, header, status, auth_request):
+        self.base_path = base_path
+        self.config = config
         self.auth_request = auth_request
-        self.hash = Hash()
+        self.hash = Hash(self.base_path, self.config)
         self.header = header
+        self.status = status
         self.user_input = ""
         self.pass_input = ""
         self.hash_access_input = ""
@@ -20,44 +23,33 @@ class Auth(object):
         self.user_cookie = ""
         self.ssid_on_db = ""
         self.is_ssid_valid = ""
-        # self.debug = Log()
-        # self.debug.log_class("Auth")
 
     def is_auth(self):
         self.user_cookie = self.auth_request.get_user_cookie_input()
-        # self.debug.log_variable("self.user_cookie", self.user_cookie)
 
         self.ssid = self.auth_request.get_ssid_cookie_input()
-        # self.debug.log_variable("self.ssid", self.ssid)
 
         self.ssid_on_db = self.hash.get_hash_on_database(self.user_cookie)
-        # self.debug.log_variable("self.ssid_on_db", self.ssid_on_db)
 
         self.is_ssid_valid = self.hash.is_valid_user_hash(
             self.ssid, self.ssid_on_db)
-        # self.debug.log_variable("self.is_ssid_valid", self.is_ssid_valid)
 
         if self.is_ssid_valid:
             return True
         else:
             self.user_input = self.auth_request.get_username_input()
-            # self.debug.log_variable("self.user_input", self.user_input)
 
             self.pass_input = self.auth_request.get_password_input()
-            # self.debug.log_variable("self.pass_input", self.pass_input)
 
             self.hash.set_hash(self.user_input, self.pass_input)
             self.ssid = self.hash.get_hash()
-            # self.debug.log_variable("self.ssid", self.ssid)
 
             if self.user_input:
                 self.ssid_on_db = self.hash.get_hash_on_database(
                     self.user_input.decode())
-                # self.debug.log_variable("self.ssid_on_db", self.ssid_on_db)
 
             self.is_ssid_valid = self.hash.is_valid_user_hash(
               self.ssid, self.ssid_on_db)
-            # self.debug.log_variable("self.is_ssid_valid", self.is_ssid_valid)
 
             if self.is_ssid_valid:
                 self.cookie.set_cookie_ssid(self.ssid)
@@ -68,6 +60,7 @@ class Auth(object):
                     ('set-cookie', self.cookie.get_cookie_ssid()),
                     ('set-cookie', self.cookie.get_cookie_user())
                 ])
+                self.status.set_status("200 OK")
 
                 return True
             else:
@@ -79,5 +72,6 @@ class Auth(object):
                     ('set-cookie', self.cookie.get_cookie_ssid()),
                     ('set-cookie', self.cookie.get_cookie_user())
                     ])
+                self.status.set_status("200 OK")
 
                 return False

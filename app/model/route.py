@@ -6,7 +6,6 @@ as rotas relacionadas às páginas html.
 Ativos (imagens, css e javascript) são
 gerenciados em outra classe.
 """
-# from app.model.debug.log import Log
 from app.model.pages.auth import Auth
 from app.model.pages.start import Start
 from app.model.pages.login import Login
@@ -21,7 +20,6 @@ class Route:
         self.header = header
         self.status = status
         self.cookie = Cookie()
-        # self.debug = Log()
         self.is_auth = is_auth
         self.html_page = ""
         self.json_page = ""
@@ -69,11 +67,10 @@ class Route:
     def get_route(self, path):
         self.path = path
         if self.is_auth:
-            # self.debug.log("Autenticado")
             if self.path in self.auth_routes_html:
                 self.html_page = self.auth_routes_html[self.path]
                 if self.path == "/auth":
-                    self.html_page = self.html_page(self.config, self.is_auth).load()
+                    self.html_page = self.html_page(self.base_path, self.config, self.is_auth).load()
                 elif self.path == "/login":
                     self.cookie.clean_cookie_ssid()
                     self.cookie.clean_cookie_user()
@@ -84,11 +81,11 @@ class Route:
                         ('set-cookie', self.cookie.get_cookie_user())
 
                     ])
-                    self.html_page = self.html_page(self.config).load()
+                    self.html_page = self.html_page(self.base_path, self.config).load()
                 else:
                     self.header.set_header([('Content-type', 'text/html')])
                     self.status.set_status("200 OK")
-                    self.html_page = self.html_page(self.config).load()
+                    self.html_page = self.html_page(self.base_path, self.config).load()
 
                 return self.html_page
             else:
@@ -96,12 +93,11 @@ class Route:
                     self.json_page = self.auth_routes_json[self.path]
                     self.status.set_status("200 OK")
                     self.header.set_header([('Content-type', 'text/json')])
-                    self.json_page = self.json_page(self.config).load()
+                    self.json_page = self.json_page(self.base_path, self.config).load()
 
                     return self.json_page
 
         else:
-            # self.debug.log("Não autenticado")
             if self.path in self.unauth_routes_html:
                 self.html_page = self.unauth_routes_html[self.path]
 
@@ -110,11 +106,11 @@ class Route:
                     Verificar o uso do try/catch aqui
                     Se já foi feito, apagar comentário
                     """
-                    self.html_page = self.html_page(self.config, self.is_auth).load()
+                    self.html_page = self.html_page(self.base_path, self.config, self.is_auth).load()
                     self.status.set_status("200 OK")
                     self.header.set_header([('Content-type', 'text/html')])
                 else:
-                    self.html_page = self.html_page(self.config).load()
+                    self.html_page = self.html_page(self.base_path, self.config).load()
                     self.status.set_status("200 OK")
                     self.header.set_header([('Content-type', 'text/html')])
 
@@ -126,7 +122,7 @@ class Route:
                     Verificar o uso do try/catch aqui.
                     se já foi feito, apagar comentário.
                     """
-                    self.json_page = self.json_page(self.config).load()
+                    self.json_page = self.json_page(self.base_path, self.config).load()
                     self.status.set_status("200 OK")
                     self.header.set_header([('Content-type', 'text/json')])
 

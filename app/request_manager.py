@@ -53,16 +53,13 @@ class RequestManager:
         self.conf.read_settings()
         self.database_is_enabled = self.conf.get_database_is_enabled()
         self.auth_request = AuthRequest(self.environ, self.wsgi_input)
-        self.auth = Auth(self.header, self.auth_request)
+        self.auth = Auth(self.base_path, self.conf, self.header, self.status, self.auth_request)
         self.route = Route(self.base_path, self.header, self.status, self.auth.is_auth())
         self.pages_auth_routes = self.route.get_auth_routes_html().keys()
         self.pages_unauth_routes = self.route.get_unauth_routes_html().keys()
         self.pages_auth_routes_json = self.route.get_auth_routes_json().keys()
         self.pages_unauth_routes_json = self.route.get_unauth_routes_json().keys()
         self.assets = Assets(self.base_path)
-        # self.debug.log_applogo()
-        # self.debug.log_start("application")
-        # self.debug.log_variable("path", self.path)
 
         if self.database_is_enabled == "yes":
             if (

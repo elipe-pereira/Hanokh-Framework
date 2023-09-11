@@ -5,11 +5,12 @@ from app.model.debug.log import Log
 
 
 class Template:
-    def __init__(self):
-        self.basepath = proj.BASEPATH
-        self.template_folder = "/view/templates/" + proj.TEMPLATE_NAME
-        self.folder_templates = self.basepath + self.template_folder + "/"
-        self.debug = Log()
+    def __init__(self, base_path, config):
+        self.config = config
+        self.base_path = base_path
+        self.template_folder = "/view/templates/" + self.config.get_template_name()
+        self.folder_templates = self.base_path + self.template_folder + "/"
+        self.debug = Log(self.base_path, self.config)
         self.debug.log_class("Template")
 
     def read_file(self, file_template):

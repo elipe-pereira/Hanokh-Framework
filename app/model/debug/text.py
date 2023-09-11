@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-class Text(object):
+class Text:
     def __init__(self):
         self.text_start = "Start {0}"
         self.text_setting = "Setting {0}: {1}"

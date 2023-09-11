@@ -5,7 +5,8 @@ from app.model.template.template import Template
 
 
 class Error404:
-    def __init__(self, config):
+    def __init__(self, base_path, config):
+        self.base_path = base_path
         self.config = config
         self.page = ""
         self.css = "/css/bootstrap.min.css"
@@ -14,7 +15,7 @@ class Error404:
         self.page_title = "HANOKH"
         self.processed_data = ""
         self.domain_base_url = self.config.get_base_uri()
-        self.page_template = Template()
+        self.page_template = Template(self.base_path, self.config)
 
     def load(self):
         self.page = self.page_template.get_page_template('404')

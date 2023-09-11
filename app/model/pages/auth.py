@@ -5,7 +5,8 @@ from app.model.template.template import Template
 
 
 class Auth(object):
-    def __init__(self, config, is_auth):
+    def __init__(self, base_path, config, is_auth):
+        self.base_path = base_path
         self.config = config
         self.title = "Autenticado com sucesso!!!"
         self.bootstrap_css = "/css/bootstrap.min.css"
@@ -13,7 +14,7 @@ class Auth(object):
         self.bootstrap_js = "/js/bootstrap.bundle.min.js"
         self.hanokh_js = "/js/bootstrap.bundle.min.js"
         self.domain_base_url = config.get_base_uri()
-        self.page_template = Template()
+        self.page_template = Template(self.base_path, self.config)
         self.is_auth = is_auth
 
     def load(self):

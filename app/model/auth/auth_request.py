@@ -2,13 +2,10 @@
 # coding: utf-8
 
 from urllib.parse import parse_qs
-# from app.model.debug.log import Log
 
 
 class AuthRequest:
     def __init__(self, environ, wsgi_input):
-        # self.debug = Log()
-        # self.debug.log_class("Request")
         self.environ = environ
         self.request = wsgi_input
         self.request = parse_qs(self.request)
@@ -28,11 +25,9 @@ class AuthRequest:
         try:
             self.username_input = self.request[b'username'][0]
         except:
-            # self.debug.log("Não há entrada de login de usuário")
             return False
 
         if len(self.username_input) > 0:
-            # self.debug.log_variable("self.username_input", self.username_input)
             return self.username_input
         else:
             return False

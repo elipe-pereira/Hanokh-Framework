@@ -5,7 +5,8 @@ from app.model.template.template import Template
 
 
 class Login(object):
-    def __init__(self, config):
+    def __init__(self, base_path, config):
+        self.base_path = base_path
         self.config = config
         self.page_title = "Login"
         self.page = ""
@@ -15,7 +16,7 @@ class Login(object):
         self.bootstrap_js = "/js/bootstrap.bundle.min.js"
         self.hanokh_js = ""
         self.domain_base_url = self.config.get_base_uri()
-        self.page_template = Template()
+        self.page_template = Template(self.base_path, self.config)
 
     def load(self):
         self.page = self.page_template.get_page_template('login')
