@@ -28,7 +28,6 @@ class RequestManager:
         self.database_is_enabled = None
         self.pages_auth_routes_json = None
         self.pages_unauth_routes_json = None
-        # self.debug = Log()
 
     def set_request_status(self, status):
         self.status = status
@@ -48,18 +47,20 @@ class RequestManager:
     def set_request_conf(self, conf):
         self.conf = conf
 
-    def get_response(self):
+    def get_response(self, path_info):
+        self.path = path_info
         self.conf.set_base_path(self.base_path)
         self.conf.read_settings()
         self.database_is_enabled = self.conf.get_database_is_enabled()
         self.auth_request = AuthRequest(self.environ, self.wsgi_input)
         self.auth = Auth(self.base_path, self.conf, self.header, self.status, self.auth_request)
         self.route = Route(self.base_path, self.header, self.status, self.auth.is_auth())
+        self.route = Route(self.base_path, self.header, self.status, False)
         self.pages_auth_routes = self.route.get_auth_routes_html().keys()
         self.pages_unauth_routes = self.route.get_unauth_routes_html().keys()
         self.pages_auth_routes_json = self.route.get_auth_routes_json().keys()
         self.pages_unauth_routes_json = self.route.get_unauth_routes_json().keys()
-        self.assets = Assets(self.base_path)
+        self.assets = Assets(self.base_path, self.conf)
 
         if self.database_is_enabled == "yes":
             if (
@@ -94,6 +95,7 @@ class RequestManager:
 
             files_pvt_to_download = PrivateDownload(
                     self.base_path,
+                    self.conf,
                     self.header,
                     self.status,
                     self.auth_request
@@ -114,7 +116,6 @@ class RequestManager:
 
         else:
             self.route = Route(self.base_path, self.header, self.status, False)
-
             if (
                     self.path in self.pages_unauth_routes
                     or self.path in self.pages_unauth_routes_json
@@ -138,9 +139,9 @@ class RequestManager:
             if is_downloadable:
                 read_asset = ReadAssets(self.base_path, self.header, self.status, self.auth_request)
                 file = read_asset.read_downloadable(self.path)
-
+            #
                 return iter([file])
-
+            #
             else:
                 self.route = Route(self.base_path, self.header, self.status, False)
 

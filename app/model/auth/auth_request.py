@@ -8,7 +8,6 @@ class AuthRequest:
     def __init__(self, environ, wsgi_input):
         self.environ = environ
         self.request = wsgi_input
-        self.request = parse_qs(self.request)
         self.username_input = ""
         self.password_input = ""
         self.cookie_request = ""
@@ -22,6 +21,7 @@ class AuthRequest:
         self.ssid_cookie = ""
 
     def get_username_input(self):
+        self.request = parse_qs(self.request.read())
         try:
             self.username_input = self.request[b'username'][0]
         except:
@@ -33,6 +33,7 @@ class AuthRequest:
             return False
 
     def get_password_input(self):
+        self.request = parse_qs(self.request.read())
         try:
             self.password_input = self.request[b'password'][0]
         except:

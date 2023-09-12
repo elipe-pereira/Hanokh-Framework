@@ -11,8 +11,10 @@ from app.request_manager import RequestManager
 
 class Main:
     def __init__(self):
+        self.page = None
         self.environ = None
         self.server_ip = None
+        self.path_info = None
         self.wsgi_input = None
         self.server_port = None
         self.start_response = None
@@ -28,6 +30,7 @@ class Main:
     def app(self, environ, start_response):
         self.environ = environ
         self.wsgi_input = self.environ['wsgi.input']
+        self.path_info = self.environ['PATH_INFO']
         self.request_manager.set_request_environ(self.environ)
         self.request_manager.set_request_status(self.status)
         self.request_manager.set_request_header(self.header)
@@ -35,10 +38,11 @@ class Main:
         self.request_manager.set_request_basepath(self.base_path)
         self.request_manager.set_request_conf(self.config)
 
-        self.start_response = start_response
-        self.start_response(self.status.get_status(), self.header.get_header())
+        self.page = self.request_manager.get_response(self.path_info)
 
-        return self.request_manager.get_response()
+        start_response(self.status.get_status(), self.header.get_header())
+
+        return self.page
 
     def run(self):
         self.config.set_base_path(self.base_path)

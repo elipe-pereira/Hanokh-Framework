@@ -2,14 +2,14 @@
 # coding: utf-8
 
 from app.model.auth.auth import Auth
-# from app.model.debug.log import Log
 from app.model.downloadables.download import Download
 
 
 class PrivateDownload:
-    def __init__(self, base_path, header, status, auth_request):
+    def __init__(self, base_path, config, header, status, auth_request):
         # self.debug = Log()
         self.base_path = base_path
+        self.config = config
         self.header = header
         self.status = status
         self.download = Download(self.base_path)
@@ -22,23 +22,18 @@ class PrivateDownload:
 
         self.dir_download = ""
         self.private_files_dir = ""
-        self.auth = Auth(self.header, self.auth_request)
-        # self.debug.log_class("PrivateDownload")
+        self.auth = Auth(self.base_path, self.config, self.header, self.status, self.auth_request)
 
     def set_private_files_dir(self, private_files_dir):
         self.private_files_dir = private_files_dir
-        # self.debug.log_act("self.private_files_dir",
-        #                    self.private_files_dir, "set")
 
     def create_user_home_routes_to_download(self):
         self.dir_download = self.files_base_dir + self.private_files_dir
-        # self.debug.log_variable("self.dir_download", self.dir_download)
 
         self.download.set_route_prefix("/" + str(self.username))
         self.download.set_files_dir(self.dir_download)
 
         if self.auth.is_auth():
-            # self.debug.log("Autenticado - Criando rotas para download")
             self.download.create_routes_to_download()
 
     def is_private_downloadable(self, path_info):

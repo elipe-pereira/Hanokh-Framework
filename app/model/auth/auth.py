@@ -25,11 +25,14 @@ class Auth:
         self.is_ssid_valid = ""
 
     def is_auth(self):
-        self.user_cookie = self.auth_request.get_user_cookie_input()
+        if self.config.get_database_is_enabled() == "no":
+            return False
 
+        self.user_cookie = self.auth_request.get_user_cookie_input()
         self.ssid = self.auth_request.get_ssid_cookie_input()
 
-        self.ssid_on_db = self.hash.get_hash_on_database(self.user_cookie)
+        if self.user_cookie:
+            self.ssid_on_db = self.hash.get_hash_on_database(self.user_cookie)
 
         self.is_ssid_valid = self.hash.is_valid_user_hash(
             self.ssid, self.ssid_on_db)

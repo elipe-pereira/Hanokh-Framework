@@ -13,6 +13,7 @@ pyinstaller --distpath $dist_path \
         --add-data "${base_path}/conf:conf" \
         --add-data "${base_path}/samples:samples" \
         --add-data "${base_path}/app/view:app/view" \
+        --hidden-import psycopg2 \
         --workpath $work_path \
         --specpath $spec_path \
         --name $name main.py
