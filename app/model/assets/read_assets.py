@@ -30,7 +30,6 @@ class ReadAssets:
         if item:
             file = open(item, 'rb').read()
             self.file_type = mimetypes.guess_type(item)
-            print(self.file_type[0])
             self.header.set_header([('Content-Type', self.file_type[0])])
             self.status.set_status("200 OK")
 
@@ -39,7 +38,7 @@ class ReadAssets:
         else:
             self.header.set_header([('Content-Type', None)])
             self.status.set_status("404 Not Found")
-            print("aqui")
+
             return file
 
     def read_downloadable(self, path_info):

@@ -4,9 +4,9 @@
 #### [Unreleased]
 #### [1.0.0]
 ##### Changed
-- Mudança completa na estrutura de pastas do framework.
-- Removido frameworks frontend.
-- Removido imagens de ícones.
+- Feito restruturação completa de pastas e nomes de classes. 
+- Mantido a classe log, porém ficará inativa, deixando parao o desenvolvedor
+decidir se quer utilizar a classe log. 
 
 #### [Released]
 #### [0.7.0]
