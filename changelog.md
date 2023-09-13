@@ -5,7 +5,7 @@
 #### [1.0.0]
 ##### Changed
 - Feito restruturação completa de pastas e nomes de classes. 
-- Mantido a classe log, porém ficará inativa, deixando parao o desenvolvedor
+- Mantido a classe log, porém ficará inativa, deixando para o desenvolvedor
 decidir se quer utilizar a classe log. 
 
 #### [Released]
