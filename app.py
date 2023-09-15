@@ -2,14 +2,15 @@
 # coding: utf-8
 import os
 import sys
-from app.model.conf.config import Config
-from app.model.http.status import Status
-from app.model.http.header import Header
-from app.model.http.server import Server
-from app.request_manager import RequestManager
+
+from application.request import Request
+from application.model.conf.config import Config
+from application.model.http.status import Status
+from application.model.http.header import Header
+from application.model.http.server import Server
 
 
-class Main:
+class App:
     def __init__(self):
         self.page = None
         self.environ = None
@@ -23,7 +24,7 @@ class Main:
         self.status = Status()
         self.header = Header()
         self.config = Config()
-        self.request_manager = RequestManager()
+        self.request = Request()
         if self.base_path not in sys.path:
             sys.path.append(self.base_path)
 
@@ -31,14 +32,14 @@ class Main:
         self.environ = environ
         self.wsgi_input = self.environ['wsgi.input']
         self.path_info = self.environ['PATH_INFO']
-        self.request_manager.set_request_environ(self.environ)
-        self.request_manager.set_request_status(self.status)
-        self.request_manager.set_request_header(self.header)
-        self.request_manager.set_request_input(self.wsgi_input)
-        self.request_manager.set_request_basepath(self.base_path)
-        self.request_manager.set_request_conf(self.config)
+        self.request.set_request_environ(self.environ)
+        self.request.set_request_status(self.status)
+        self.request.set_request_header(self.header)
+        self.request.set_request_input(self.wsgi_input)
+        self.request.set_request_basepath(self.base_path)
+        self.request.set_request_conf(self.config)
 
-        self.page = self.request_manager.get_response(self.path_info)
+        self.page = self.request.get_response(self.path_info)
 
         start_response(self.status.get_status(), self.header.get_header())
 
@@ -57,5 +58,5 @@ class Main:
 
 
 if __name__ == "__main__":
-    app = Main()
+    app = App()
     app.run()

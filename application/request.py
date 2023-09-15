@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from app.model.route import Route
-from app.model.auth.auth import Auth
-from app.model.assets.assets import Assets
-from app.model.assets.read_assets import ReadAssets
-from app.model.auth.auth_request import AuthRequest
-from app.model.downloadables.public_download import PublicDownload
-from app.model.downloadables.private_download import PrivateDownload
+from application.model.route import Route
+from application.model.auth.auth import Auth
+from application.model.assets.assets import Assets
+from application.model.assets.read_assets import ReadAssets
+from application.model.auth.auth_request import AuthRequest
+from application.model.assets.downloadables.public_download import PublicDownload
+from application.model.assets.downloadables.private_download import PrivateDownload
 
 
-class RequestManager:
+class Request:
     def __init__(self):
         self.auth = None
         self.conf = None
@@ -78,7 +78,7 @@ class RequestManager:
             is_asset = self.assets.is_asset(self.path)
 
             if is_asset:
-                read_asset = ReadAssets(self.base_path, self.header, self.status, self.auth_request)
+                read_asset = ReadAssets(self.base_path, self.conf, self.header, self.status, self.auth, self.auth_request)
                 file = read_asset.read(self.path)
                 asset = file
 
@@ -88,7 +88,7 @@ class RequestManager:
             is_downloadable = files_to_download.is_downloadable(self.path)
 
             if is_downloadable:
-                read_asset = ReadAssets(self.base_path, self.header, self.status, self.auth_request)
+                read_asset = ReadAssets(self.base_path, self.conf, self.header, self.status, self.auth, self.auth_request)
                 file = read_asset.read_downloadable(self.path)
 
                 return iter([file])
@@ -98,12 +98,13 @@ class RequestManager:
                     self.conf,
                     self.header,
                     self.status,
+                    self.auth,
                     self.auth_request
                     )
             is_pvt_downloadable = files_pvt_to_download.is_private_downloadable(self.path)
 
             if is_pvt_downloadable:
-                read_asset = ReadAssets(self.base_path, self.header, self.status, self.auth_request)
+                read_asset = ReadAssets(self.base_path, self.conf, self.header, self.status, self.auth, self.auth_request)
                 file = read_asset.read_private_downloadable(self.path)
 
                 return iter([file])
@@ -128,7 +129,7 @@ class RequestManager:
             is_asset = self.assets.is_asset(self.path)
 
             if is_asset:
-                read_asset = ReadAssets(self.base_path, self.header, self.status, self.auth_request)
+                read_asset = ReadAssets(self.base_path, self.conf, self.header, self.status, self.auth, self.auth_request)
                 asset = read_asset.read(self.path)
 
                 return iter([asset])
@@ -137,7 +138,7 @@ class RequestManager:
             is_downloadable = files_to_download.is_downloadable(self.path)
 
             if is_downloadable:
-                read_asset = ReadAssets(self.base_path, self.header, self.status, self.auth_request)
+                read_asset = ReadAssets(self.base_path, self.conf, self.header, self.status, self.auth, self.auth_request)
                 file = read_asset.read_downloadable(self.path)
             #
                 return iter([file])

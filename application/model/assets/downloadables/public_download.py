@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from app.model.downloadables.download import Download
-# from app.model.debug.log import Log
+from application.model.assets.downloadables.download import Download
+# from application.model.debug.log import Log
 
 
 class PublicDownload(Download):

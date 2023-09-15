@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding: utf-8
 
-# from app.model.debug.log import Log
+# from application.model.debug.log import Log
 
 
 class User(object):

@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from app.model.auth.auth import Auth
-from app.model.downloadables.download import Download
+from application.model.assets.downloadables.download import Download
 
 
 class PrivateDownload:
-    def __init__(self, base_path, config, header, status, auth_request):
+    def __init__(self, base_path, config, header, status, auth, auth_request):
         # self.debug = Log()
         self.base_path = base_path
         self.config = config
@@ -22,7 +21,7 @@ class PrivateDownload:
 
         self.dir_download = ""
         self.private_files_dir = ""
-        self.auth = Auth(self.base_path, self.config, self.header, self.status, self.auth_request)
+        self.auth = auth
 
     def set_private_files_dir(self, private_files_dir):
         self.private_files_dir = private_files_dir

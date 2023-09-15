@@ -6,12 +6,12 @@ as rotas relacionadas às páginas html.
 Ativos (imagens, css e javascript) são
 gerenciados em outra classe.
 """
-from app.model.pages.auth import Auth
-from app.model.pages.start import Start
-from app.model.pages.login import Login
-from app.model.http.cookie import Cookie
-from app.model.conf.config import Config
-from app.model.pages.error_404 import Error404
+from application.model.pages.auth import Auth
+from application.model.pages.start import Start
+from application.model.pages.login import Login
+from application.model.http.cookie import Cookie
+from application.model.conf.config import Config
+from application.model.pages.error_404 import Error404
 
 
 class Route:

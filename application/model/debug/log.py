@@ -2,7 +2,7 @@
 # coding: utf-8
 
 import logging
-from app.model.debug.text import Text
+from application.model.debug.text import Text
 
 
 class Log:

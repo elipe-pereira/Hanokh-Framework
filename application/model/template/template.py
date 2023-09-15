@@ -5,7 +5,7 @@ class Template:
     def __init__(self, base_path, config):
         self.config = config
         self.base_path = base_path
-        self.template_folder = "/app/view/templates/" + self.config.get_template_name()
+        self.template_folder = "/application/view/templates/" + self.config.get_template_name()
         self.folder_templates = self.base_path + self.template_folder + "/"
 
     def read_file(self, file_template):
