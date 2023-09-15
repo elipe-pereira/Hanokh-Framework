@@ -1,6 +1,11 @@
 ### Hanokh-framework
 ### Framework para desenvolvimento de software para web
 
+#### [Released]
+#### [2.0.0] - 2023-09-15
+#### Changed
+- Feito restruturação de alguns nomes de arquivos e pastas. 
+
 #### [Released] - 2023-09-13
 #### [1.0.0]
 ##### Changed
