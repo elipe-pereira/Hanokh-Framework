@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from application.model.assets.downloadables.download import Download
+from application.assets.download.download import Download
 # from application.model.debug.log import Log
 
 

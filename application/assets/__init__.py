@@ -5,10 +5,10 @@ class Assets(object):
     def __init__(self, base_path, config):
         self.base_path = base_path
         self.config = config
-        self.favico = "/application/view/assets/images/favicon.ico"
-        self.btstrap = "/application/view/assets/css/bootstrap5/bootstrap.min.css"
-        self.btstrap_js = "/application/view/assets/js/bootstrap5/bootstrap.bundle.min.js"
-        self.hnk_css = "/application/view/assets/css/hanokh/hanokh.css"
+        self.favico = "/application/assets/images/favicon.ico"
+        self.btstrap = "/application/assets/css/bootstrap5/bootstrap.min.css"
+        self.btstrap_js = "/application/assets/js/bootstrap5/bootstrap.bundle.min.js"
+        self.hnk_css = "/application/assets/css/hanokh/hanokh.css"
         self.map_assets = {
             "/favicon.ico": self.base_path + self.favico,
             "/css/bootstrap.min.css": self.base_path + self.btstrap,

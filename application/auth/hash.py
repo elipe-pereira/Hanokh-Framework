@@ -2,7 +2,7 @@
 # coding: utf-8
 
 import hashlib
-from application.model.db.database import Database
+from application.db.database import Database
 
 
 class Hash(object):

@@ -2,9 +2,9 @@
 # coding: utf-8
 
 import mimetypes
-from application.model.assets.assets import Assets
-from application.model.assets.downloadables.public_download import PublicDownload
-from application.model.assets.downloadables.private_download import PrivateDownload
+from application.assets import Assets
+from application.assets.download.public_download import PublicDownload
+from application.assets.download.private_download import PrivateDownload
 
 
 class ReadAssets:

@@ -2,6 +2,11 @@
 ### Framework para desenvolvimento de software para web
 
 #### [Released]
+#### [3.0.0] - 2023-09-21
+##### Changed
+- Feito nova reestruturação de pastas adicionando simplificações.
+
+#### [Released]
 #### [2.0.0] - 2023-09-15
 #### Changed
 - Feito restruturação de alguns nomes de arquivos e pastas. 
