@@ -4,11 +4,11 @@
 from os.path import dirname
 from os.path import realpath
 
+from application.conf import Config
+from application.http import Status
+from application.http import Header
+from application.http import Server
 from application.http import Request
-from application.conf.config import Config
-from application.http.status import Status
-from application.http.header import Header
-from application.http.server import Server
 
 
 class App:
@@ -48,12 +48,13 @@ class App:
     def run(self):
         self.config.set_base_path(self.basepath)
         self.config.read_settings()
+
         self.server_ip = self.config.get_ip_srv()
         self.server_port = self.config.get_port_srv()
+
         self.server.set_host_ip(self.server_ip)
         self.server.set_port(self.server_port)
         self.server.set_app(self.app)
-
         self.server.run_server()
 
 
