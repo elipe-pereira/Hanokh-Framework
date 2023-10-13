@@ -10,7 +10,6 @@ class Template:
 
     def read_file(self, file_template):
         file_template = self.folder_templates + file_template + ".html"
-
         file = open(file_template, 'r', encoding='utf-8')
         template = ""
 
@@ -18,7 +17,6 @@ class Template:
             template = template + html
 
         file.close()
-
         return template
 
     def get_page_template(self, file_template):

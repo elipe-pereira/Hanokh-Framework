@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from application.template import Template
+from application.template.template import Template
 
 
 class Auth(object):

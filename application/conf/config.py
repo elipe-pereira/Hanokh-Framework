@@ -17,17 +17,17 @@ class Config:
         self.db_type = None
         self.tpl_name = None
         self.base_uri = None
-        self.base_path = None
+        self.basepath = None
         self.cfg_file = None
         self.sct_app_name = "app"
         self.sct_server = "server"
         self.parser = ConfigParser()
 
-    def set_base_path(self, base_path):
-        self.base_path = base_path
+    def set_basepath(self, basepath):
+        self.basepath = basepath
 
     def get_base_path(self):
-        return self.base_path
+        return self.basepath
 
     def get_template_name(self):
         return self.tpl_name
@@ -66,7 +66,7 @@ class Config:
         return self.dbg
 
     def read_settings(self):
-        self.cfg_file = self.base_path + "/conf/app.conf"
+        self.cfg_file = self.basepath + "/conf/app.conf"
         self.parser.read(self.cfg_file)
         self.tpl_name = self.parser.get(self.sct_app_name, 'tpl_name')
         self.base_uri = self.parser.get(self.sct_app_name, 'base_url')

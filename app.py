@@ -4,11 +4,11 @@
 from os.path import dirname
 from os.path import realpath
 
-from application.conf import Config
-from application.http import Status
-from application.http import Header
-from application.http import Server
-from application.http import Request
+from application.conf.config import Config
+from application.http.status import Status
+from application.http.header import Header
+from application.http.server import Server
+from application.http.request import Request
 
 
 class App:
@@ -32,21 +32,25 @@ class App:
         self.environ = environ
         self.wsgi_input = self.environ['wsgi.input']
         self.path_info = self.environ['PATH_INFO']
-        self.request.set_request_environ(self.environ)
-        self.request.set_request_status(self.status)
-        self.request.set_request_header(self.header)
-        self.request.set_request_input(self.wsgi_input)
-        self.request.set_request_basepath(self.basepath)
-        self.request.set_request_conf(self.config)
+        self.request.set_environ(self.environ)
+        self.request.set_status(self.status)
+        self.request.set_header(self.header)
+        self.request.set_input(self.wsgi_input)
+        self.request.set_basepath(self.basepath)
+        self.request.set_conf(self.config)
+        self.request.set(self.path_info)
 
-        self.page = self.request.get_response(self.path_info)
+        self.page = self.request.get()
 
-        start_response(self.status.get_status(), self.header.get_header())
+        start_response(
+            self.status.get_status(),
+            self.header.get_header()
+        )
 
         return self.page
 
     def run(self):
-        self.config.set_base_path(self.basepath)
+        self.config.set_basepath(self.basepath)
         self.config.read_settings()
 
         self.server_ip = self.config.get_ip_srv()

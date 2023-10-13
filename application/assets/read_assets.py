@@ -2,7 +2,7 @@
 # coding: utf-8
 
 import mimetypes
-from application.assets import Assets
+from application.assets.assets import Assets
 from application.assets.download.public_download import PublicDownload
 from application.assets.download.private_download import PrivateDownload
 

@@ -2,16 +2,16 @@
 # coding: utf-8
 
 # from application.model.debug.log import Log
-from application.auth import Hash
-from application.http import Cookie
+from application.auth.hash import Hash
+from application.http.cookie import Cookie
 
 
 class Auth:
-    def __init__(self, base_path, config, header, status, auth_request):
-        self.base_path = base_path
+    def __init__(self, basepath, config, header, status, auth_request):
+        self.basepath = basepath
         self.config = config
         self.auth_request = auth_request
-        self.hash = Hash(self.base_path, self.config)
+        self.hash = Hash(self.basepath, self.config)
         self.header = header
         self.status = status
         self.user_input = ""

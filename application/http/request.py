@@ -1,11 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 # coding: utf-8
 
-from application.auth import Auth
-from application.route import Route
-from application.assets import Assets
-from application.assets import ReadAssets
+from application.auth.auth import Auth
+from application.route.route import Route
+from application.assets.assets import Assets
 from application.auth.auth_request import AuthRequest
+from application.assets.read_assets import ReadAssets
 from application.assets.download.public_download import PublicDownload
 from application.assets.download.private_download import PrivateDownload
 
@@ -15,86 +15,123 @@ class Request:
         self.auth = None
         self.conf = None
         self.path = None
+        self.page = None
         self.route = None
         self.header = None
         self.assets = None
         self.status = None
         self.environ = None
-        self.base_path = None
+        self.basepath = None
+        self.db_enabled = None
         self.wsgi_input = None
         self.auth_request = None
-        self.pages_auth_routes = None
-        self.pages_unauth_routes = None
-        self.database_is_enabled = None
-        self.pages_auth_routes_json = None
-        self.pages_unauth_routes_json = None
+        # html routes
+        self.auth_routes = None
+        self.unauth_routes = None
+        # json routes
+        self.auth_routes_jsn = None
+        self.unauth_routes_jsn = None
 
-    def set_request_status(self, status):
+    def set_status(self, status):
         self.status = status
 
-    def set_request_header(self, header):
+    def set_header(self, header):
         self.header = header
 
-    def set_request_input(self, wsgi_input):
+    def set_input(self, wsgi_input):
         self.wsgi_input = wsgi_input
 
-    def set_request_environ(self, environ):
+    def set_environ(self, environ):
         self.environ = environ
 
-    def set_request_basepath(self, base_path):
-        self.base_path = base_path
+    def set_basepath(self, basepath):
+        self.basepath = basepath
 
-    def set_request_conf(self, conf):
+    def set_conf(self, conf):
         self.conf = conf
-
-    def get_response(self, path_info):
-        self.path = path_info
-        self.conf.set_base_path(self.base_path)
+        self.conf.set_base_path(self.basepath)
         self.conf.read_settings()
-        self.database_is_enabled = self.conf.get_database_is_enabled()
-        self.auth_request = AuthRequest(self.environ, self.wsgi_input)
-        self.auth = Auth(self.base_path, self.conf, self.header, self.status, self.auth_request)
-        self.route = Route(self.base_path, self.header, self.status, self.auth.is_auth())
-        self.route = Route(self.base_path, self.header, self.status, False)
-        self.pages_auth_routes = self.route.get_auth_routes_html().keys()
-        self.pages_unauth_routes = self.route.get_unauth_routes_html().keys()
-        self.pages_auth_routes_json = self.route.get_auth_routes_json().keys()
-        self.pages_unauth_routes_json = self.route.get_unauth_routes_json().keys()
-        self.assets = Assets(self.base_path, self.conf)
 
-        if self.database_is_enabled == "yes":
+    def set(self, path_info):
+        self.path = path_info
+        self.db_enabled = self.conf.get_database_is_enabled()
+
+        self.auth_request = AuthRequest(
+            self.environ,
+            self.wsgi_input
+        )
+        self.auth = Auth(
+            self.basepath,
+            self.conf,
+            self.header,
+            self.status,
+            self.auth_request
+        )
+        self.route = Route(
+            self.basepath,
+            self.header,
+            self.status,
+            self.auth.is_auth()
+        )
+        self.route = Route(
+            self.basepath,
+            self.header,
+            self.status,
+            False
+        )
+        self.auth_routes = self.route.get_auth_routes_html().keys()
+        self.unauth_routes = self.route.get_unauth_routes_html().keys()
+        self.auth_routes_jsn = self.route.get_auth_routes_json().keys()
+        self.unauth_routes_jsn = self.route.get_unauth_routes_json().keys()
+
+        self.assets = Assets(
+            self.basepath,
+            self.conf
+        )
+
+        if self.db_enabled == "yes":
             if (
-                    self.path in self.pages_auth_routes
-                    or self.path in self.pages_unauth_routes
-                    or self.path in self.pages_auth_routes_json
-                    or self.path in self.pages_unauth_routes_json
+                    self.path in self.auth_routes
+                    or self.path in self.unauth_routes
+                    or self.path in self.auth_routes_jsn
+                    or self.path in self.unauth_routes_jsn
             ):
 
-                page = self.route.get_route(self.path)
-                page = bytes(str(page), "utf-8")
-
-                return iter([page])
+                self.page = self.route.get_route(self.path)
+                self.page = bytes(str(self.page), "utf-8")
+                return iter([self.page])
 
             is_asset = self.assets.is_asset(self.path)
-
             if is_asset:
-                read_asset = ReadAssets(self.base_path, self.conf, self.header, self.status, self.auth, self.auth_request)
+                read_asset = ReadAssets(
+                    self.basepath,
+                    self.conf,
+                    self.header,
+                    self.status,
+                    self.auth,
+                    self.auth_request
+                )
                 file = read_asset.read(self.path)
-                asset = file
+                self.page = file
+                return iter([self.page])
 
-                return iter([asset])
-
-            files_to_download = PublicDownload(self.base_path)
+            files_to_download = PublicDownload(self.basepath)
             is_downloadable = files_to_download.is_downloadable(self.path)
-
             if is_downloadable:
-                read_asset = ReadAssets(self.base_path, self.conf, self.header, self.status, self.auth, self.auth_request)
+                read_asset = ReadAssets(
+                    self.basepath,
+                    self.conf,
+                    self.header,
+                    self.status,
+                    self.auth,
+                    self.auth_request
+                )
                 file = read_asset.read_downloadable(self.path)
-
-                return iter([file])
+                self.page = file
+                return iter([self.page])
 
             files_pvt_to_download = PrivateDownload(
-                    self.base_path,
+                    self.basepath,
                     self.conf,
                     self.header,
                     self.status,
@@ -102,52 +139,77 @@ class Request:
                     self.auth_request
                     )
             is_pvt_downloadable = files_pvt_to_download.is_private_downloadable(self.path)
-
             if is_pvt_downloadable:
-                read_asset = ReadAssets(self.base_path, self.conf, self.header, self.status, self.auth, self.auth_request)
+                read_asset = ReadAssets(
+                    self.basepath,
+                    self.conf,
+                    self.header,
+                    self.status,
+                    self.auth,
+                    self.auth_request
+                )
                 file = read_asset.read_private_downloadable(self.path)
-
-                return iter([file])
+                self.page = file
+                return iter([self.page])
             else:
                 self.path = "/404"
-                page = self.route.get_route(self.path)
-                page = bytes(str(page), "utf-8")
-
-                return iter([page])
-
+                self.page = self.route.get_route(self.path)
+                self.page = bytes(str(self.page), "utf-8")
+                return iter([self.page])
         else:
-            self.route = Route(self.base_path, self.header, self.status, False)
+            self.route = Route(
+                self.basepath,
+                self.header,
+                self.status,
+                False
+            )
             if (
-                    self.path in self.pages_unauth_routes
-                    or self.path in self.pages_unauth_routes_json
+                    self.path in self.unauth_routes
+                    or self.path in self.unauth_routes_jsn
             ):
-                page = self.route.get_route(self.path)
-                page = bytes(str(page), "utf-8")
-
-                return iter([page])
+                self.page = self.route.get_route(self.path)
+                self.page = bytes(str(self.page), "utf-8")
+                return iter([self.page])
 
             is_asset = self.assets.is_asset(self.path)
-
             if is_asset:
-                read_asset = ReadAssets(self.base_path, self.conf, self.header, self.status, self.auth, self.auth_request)
+                read_asset = ReadAssets(
+                    self.basepath,
+                    self.conf,
+                    self.header,
+                    self.status,
+                    self.auth,
+                    self.auth_request
+                )
                 asset = read_asset.read(self.path)
+                self.page = asset
+                return iter([self.page])
 
-                return iter([asset])
-
-            files_to_download = PublicDownload(self.base_path)
+            files_to_download = PublicDownload(self.basepath)
             is_downloadable = files_to_download.is_downloadable(self.path)
-
             if is_downloadable:
-                read_asset = ReadAssets(self.base_path, self.conf, self.header, self.status, self.auth, self.auth_request)
+                read_asset = ReadAssets(
+                    self.basepath,
+                    self.conf,
+                    self.header,
+                    self.status,
+                    self.auth,
+                    self.auth_request
+                )
                 file = read_asset.read_downloadable(self.path)
-            #
-                return iter([file])
-            #
+                self.page = file
+                return iter([self.page])
             else:
-                self.route = Route(self.base_path, self.header, self.status, False)
-
+                self.route = Route(
+                    self.basepath,
+                    self.header,
+                    self.status,
+                    False
+                )
                 self.path = "/404"
-                page = self.route.get_route(self.path)
-                page = bytes(str(page), "utf-8")
+                self.page = self.route.get_route(self.path)
+                self.page = bytes(str(self.page), "utf-8")
+                return iter([self.page])
 
-                return iter([page])
+    def get(self):
+        return iter([self.page])
